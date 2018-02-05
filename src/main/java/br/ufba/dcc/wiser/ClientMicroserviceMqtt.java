@@ -2,10 +2,14 @@ package br.ufba.dcc.wiser;
 
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.buffer.Buffer;
 
 import io.vertx.mqtt.MqttClient;
 import io.vertx.mqtt.MqttClientOptions;
+import io.vertx.mqtt.MqttConnectionException;
+import io.vertx.mqtt.MqttException;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +23,14 @@ public class ClientMicroserviceMqtt extends AbstractVerticle {
 
     public static final String MQTT_SERVER_HOST = "localhost";
     public static final int MQTT_SERVER_PORT = 1883;
+    private static int counter;
 
     private static final Logger LOG = LoggerFactory.getLogger(ClientMicroserviceMqtt.class);
 
     @Override
     public void start() {
 
-        MqttClientOptions options = new MqttClientOptions();
-
+      
         MqttClient client = MqttClient.create(vertx);
 
         client.connect(MQTT_SERVER_PORT, MQTT_SERVER_HOST, s -> {
@@ -44,17 +48,20 @@ public class ClientMicroserviceMqtt extends AbstractVerticle {
             })
                     .subscribe("REACTIVE", 0);
 
-            client.publish("REACTIVE",
-                    Buffer.buffer("reactive microservices"),
-                    MqttQoS.AT_MOST_ONCE,
-                    true,
-                    true);
+            vertx.setPeriodic(1000, time -> {
 
-            // client.disconnect(); 
+                client.publish("REACTIVE",
+                        Buffer.buffer("reactive microservices" + counter++),
+                        MqttQoS.AT_MOST_ONCE,
+                        false,
+                        false);
+
+            });
+
+            // client.disconnect();
+            // vertx.close();
         });
 
-        options.setAutoKeepAlive(false);
-
+      
     }
-
 }
