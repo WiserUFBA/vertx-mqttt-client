@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ClientMicroserviceMqtt extends AbstractVerticle {
 
-    public static final String MQTT_SERVER_HOST = "localhost";
+    public static final String MQTT_SERVER_HOST = "192.168.0.25";
     public static final int MQTT_SERVER_PORT = 1883;
     private static int counter;
 
@@ -30,9 +30,15 @@ public class ClientMicroserviceMqtt extends AbstractVerticle {
     @Override
     public void start() {
 
-      
-        MqttClient client = MqttClient.create(vertx);
+        MqttClientOptions opt = new MqttClientOptions();
+        
+        opt.setUsername("karaf");
+        opt.setPassword("karaf");
+        MqttClient client = MqttClient.create(vertx,opt );
 
+        
+        
+        System.out.println("Publicando em" + MQTT_SERVER_HOST);
         client.connect(MQTT_SERVER_PORT, MQTT_SERVER_HOST, s -> {
 
             client.publishHandler(s1 -> {
@@ -46,13 +52,13 @@ public class ClientMicroserviceMqtt extends AbstractVerticle {
                 LOG.info("QoS: " + s1.qosLevel());
 
             })
-                    .subscribe("REACTIVE", 0);
+          .subscribe("REACTIVE", 0);
 
             vertx.setPeriodic(1000, time -> {
 
                 client.publish("REACTIVE",
                         Buffer.buffer("reactive microservices" + counter++),
-                        MqttQoS.AT_MOST_ONCE,
+                        MqttQoS.AT_LEAST_ONCE,
                         false,
                         false);
 
