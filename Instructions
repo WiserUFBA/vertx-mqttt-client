@@ -1,0 +1,44 @@
+
+Instructions to run this small project:
+
+1 - Download or clone Project
+2 - Open project in your IDE
+3 - Run the class Server.  After server started:
+
+MQTT server is listening on port 1883
+
+4 - Run Class PublisherPaho
+
+In Vertx MQTT Server looks that message:
+
+
+MQTT client [pub-0] request to connect, clean session = false
+[will flag = false topic = null msg = null QoS = 0 isRetain = false]
+[keep alive timeout = 30]
+Subscription for topic with QoS AT_LEAST_ONCE
+Just received message on [topic] payload [reactive microservices client paho 0] with QoS [AT_LEAST_ONCE]
+aqui
+Connection closed
+MQTT client [pub-0] request to connect, clean session = true
+[username = karaf, password = karaf]
+[will flag = false topic = null msg = null QoS = 0 isRetain = false]
+[keep alive timeout = 60]
+Subscription for REACTIVE with QoS AT_LEAST_ONCE
+Just received message on [REACTIVE] payload [reactive microservices client paho 1] with QoS [AT_LEAST_ONCE] 
+.....
+
+5 - In the client (PublisherPaho) should run method callback (messageArrived).  
+This method (messageArrived) is called when a message arrives from the server.  
+
+In my project the method callback not work but message arrives from the server.  I need support for to resolve this problem.
+
+Thanks.
+
+Cleber Lira
+
+
+
+
+
+
+
