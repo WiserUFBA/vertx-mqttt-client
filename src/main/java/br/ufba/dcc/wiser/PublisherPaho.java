@@ -36,7 +36,7 @@ public class PublisherPaho implements MqttCallback {
 
             MqttConnectOptions opt = new MqttConnectOptions();
 
-            opt.setCleanSession(false);
+            opt.setCleanSession(true);
             
             opt.setKeepAliveInterval(30);
 	    opt.setAutomaticReconnect(true);
@@ -45,15 +45,9 @@ public class PublisherPaho implements MqttCallback {
 
             client.connect(opt);
             
-            client.subscribe("topic", 1);
+            client.subscribe("dev/libeliumSmartWater01/RES", 1);
 		     
-            
-            client.publish("topic",
-                          ("reactive microservices client paho " + counter++).getBytes(),
-                           1,
-                            false);
-            
-            System.out.println("Connected to the broker.. ");
+             System.out.println("Connected to the broker.. ");
             
 
             System.in.read();
