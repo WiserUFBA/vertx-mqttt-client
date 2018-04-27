@@ -31,7 +31,7 @@ public class VertxMQTTServer extends AbstractVerticle {
 
         final MqttServer mqttServer = MqttServer.create(vertx);
         mqttServer.endpointHandler(endpoint -> {
-            System.out.printf("MQTT client [%s] request to connect, clean session = %s %n",
+            System.out.printf("MQTT client [%s] request to ct, clean session = %s %n",
                     endpoint.clientIdentifier(),
                     endpoint.isCleanSession());
 
